@@ -1,5 +1,5 @@
 ---
-title: "The Ambiguous Effect of the Universal Free Meals Program on Elementary School Test Scores"
+title: "The Questionable Effects of Universal Free Meals on Elementary School Test Scores"
 author: "A Mahfouz"
 date: "03/22/2020"
 geometry: margin=1in
@@ -8,7 +8,7 @@ output:
     latex_engine: xelatex
   html_document:
     df_print: paged
-abstract: In September 2017, New York City made all school meals free to all public school students as part of its Universal Free Meals program (UFM); previously, participation was piecemeal. We used a difference-in-differences design to examine the effect of UFM on the proportion of elementary school students meeting grade-level expectations on state standardized tests. We find that effect size and significance are highly sensitive to model specification, and that DOE policy changes and data decisions, while well-meaning and on the balance better for students, contributed to ambiguous effects.
+abstract: In September 2017, New York City made all school meals free to all public school students as part of its Universal Free Meals program (UFM); previously, participation was piecemeal. We used a difference-in-differences design to examine the effect of UFM on the proportion of elementary school students meeting grade-level expectations on state standardized tests. We find that effect size and significance are highly sensitive to model specification, and that DOE policy changes and data decisions, while well-meaning and on the balance better for students, muddied findings.
 ---
 
 ```{r setup, include=FALSE}
@@ -30,7 +30,7 @@ library(egg)
 
 In September 2017, after years of agitation by local elected officials and education and food policy advocates, New York City rolled out universal free meals (UFM) to all 1.1 million of its public school students, regardless  of family income. The policy change extends an earlier UFM pilot in middle schools, individual school opt-ins to universal school meal (USM) programs, and an over decade-old free breakfast program. Proponents argued that the move would improve equity by eliminating the stigma surrounding free lunch, which often keeps eligible students from participating in the program, and could improve student outcomes.
 
-Prior research examined the impacts of universal free lunch on outcomes for individual middle school students in New York City, finding that the program significantly improved test performance for both economically disadvantaged and non-economically disadvantaged students, with the latter reaping bigger benefits. In this paper, we turn our attention to elementary schools, looking at school-level demographic and standardized test performance data to explore the effects of UFM on academic outcomes. We find that limitations in publicly available data make it difficult to draw any conclusions about impact at this time.
+Prior research examined the impacts of universal free lunch on outcomes for individual middle school students in New York City, finding that the program significantly improved test performance for both economically disadvantaged and non-economically disadvantaged students, with the latter reaping bigger benefits (Schwartz and Rothbard, 2019). In this paper, we turn our attention to elementary schools, looking at school-level demographic and standardized test performance data to explore the effects of UFM on academic outcomes. We find that limitations in publicly available data make it difficult to draw decisive conclusions about impact.
 
 
 ## Data
@@ -41,7 +41,7 @@ Prior research examined the impacts of universal free lunch on outcomes for indi
 ```{r cleandata, code=readLines("02_clean_data.R"), include=FALSE}
 ```
 
-Investigating the effects of universal free meals required data test score data by school and grade, school demographic data, and a list of elementary schools were already participating in Universal School Meal (USM) programs prior to UFM.  The Department of Education does not make available historical USM data. To identify elementary schools that had USM before the policy change, we used an older version of the school demographic snapshot dataset available on the city's open data portal. This data contains enrollment counts for each grade level from the 2011-12 school year through 2015-16, along with school-wide demographic breakdowns by gender, race, and whether the student had an identified disability, was an English language learner, or met the DOE's definition of living in poverty.  Here, a student was counted as being in poverty if their family received benefits from the city's Human Resources Administration _or_ if they received free or reduced-price lunch. Therefore, USM schools can be identified as those whose poverty rate was given as 100%. Schools were removed from the dataset if they did not have any students in the third, fourth, and fifth grades. This excluded very new elementary schools as well as ones being phased out. Combined elementary and middle schools were retained as they were not included in the middle school UFM pilot.
+The Department of Education does not make available historical USM data. To identify elementary schools that had USM before the policy change, we used an old version of the school demographic dataset available on the city's open data portal. This data contains enrollment counts for each grade level from the 2011-12 school year through 2015-16, along with school-wide demographic breakdowns, including the proportion of students meeting the DOE's definition of living in poverty.  Here, a student was counted as being in poverty if their family received benefits from the city's Human Resources Administration _or_ if they received free or reduced-price lunch. Therefore, USM schools can be identified as those whose poverty rate was given as 100%. Schools were removed from the dataset if they did not have any students in the third, fourth, and fifth grades. This excluded very new elementary schools as well as ones being phased out. Combined elementary and middle schools were retained as they were not included in the middle school UFM pilot.
 
 ```{r usm, echo=FALSE}
 usm_tbl %>% 
@@ -53,9 +53,9 @@ usm_tbl %>%
                caption="Elementary Schools by Universal School Meals Participation, pre-2017")
 ```
 
-As shown in Table 1 above, just over a quarter of the city's 877 established elementary schools had Universal School Meals prior to full UFM implementation in 2017. However, it's worth noting that the New York City public school system is overall characterized by high levels of need. Figure 1 below reveals that most students in most schools qualified for free or reduced price lunch even before UFM. 
+As shown in Table 1 above, just over a quarter of the city's 877 established elementary schools had Universal School Meals prior to full UFM implementation in 2017. However, the New York City public school system is overall characterized by high levels of need. Figure 1 below reveals that most students in most schools qualified for free or reduced price lunch even before UFM. 
 
-```{r povrate, echo=FALSE, fig.height=2.4}
+```{r povrate, echo=FALSE, fig.height=2.3}
 
 poverty_rate_hist <- all_elem %>% filter(sy_end==2016) %>% 
   ggplot(aes(x=poverty_2)) +
@@ -87,43 +87,9 @@ Of course, poverty negatively affects student outcomes beyond just the effects o
 
 It is important to note two changes to poverty rate calculations here. The DOE altered how it computes student poverty after UFM was implemented. Students were no longer counted as being in poverty simply because they attended a school with universal meals. The determination is instead based on family data as reported to and matched from various government programs (NYC DOE, 2019). This adjusted calculation was retroactively applied to pre-2017 school years and is reflected in newer demographic snapshot datasets. Furthermore, a new data matching process was implemented in the 2017-18 school year to better identify students with low family incomes; this matching process was _not_ retroactively applied, and both poverty rates and economic need indices jumped in the 2017-18 school year as a result.
 
-The two measures can lead to contradictory findings. The median poverty rate of pre-2017 USM schools was actually _lower_ than the median poverty rate of their non-USM counterparts, though the median economic need index was higher. Meanwhile, pre-2017 USM schools tended to have fewer black students and more Latino students and English Language Learners than their non-USM counterparts. As schools had to individually opt into USM, there are likely organizational explanations for this.
-
 English language arts (ELA) and math standardized test scores by school and grade for the 2012-13 through 2018-19 school years were obtained from the DOE's website. Students are tested at the end of every school year from 3rd grade through 8th; i.e., 2019 test scores measure student performance in the 2018-19 school year. Since our focus is on elementary school students, we looked only at 3rd, 4th, and 5th grade test scores. To comply with the Family Educational Rights and Privacy Act (FERPA), the DOE does not make score data available in cases where five or fewer students were tested; those records were removed from the data. For both the ELA and math exams, raw student scores are converted into scaled scores. These are then converted into performance levels on a scale of 1 to 4, with 4 being the highest; students at levels 3 and 4 are considered to meet performance standards for their grade. The scaled score ranges associated with each performance level vary from year to year. Therefore, school-level mean scaled scores are not comparable between years. Instead, we used as a measure of performance the percentage of students testing at level 3 or 4.
 
-```{r scores, eval=FALSE, fig.height=3.5, fig.width=6.5, message=FALSE, warning=FALSE, include=FALSE}
-test_hist <- full_data %>% 
-  filter(year >= 2015) %>% 
-  filter(!is.na(percent_level_3_4_e)) %>% 
-  ggplot() +
-  geom_freqpoly(aes(x=percent_level_3_4_e, color="ELA"),
-                bins= 10, 
-                size=1, 
-                alpha=.6,
-                show.legend=TRUE) +
-  geom_freqpoly(aes(x=percent_level_3_4_m, color="Math"), 
-                bins=10, 
-                size=1, 
-                alpha=.6,
-                show.legend=TRUE) +
-  facet_grid(grade~year) +
-  scale_x_continuous(breaks=c(0, 50, 100),
-                     labels=c("0", 
-                              "50",
-                              "100")) +
-  labs(x="% of Students at Level 3 or 4",
-       y="Schools",
-       color="Test",
-       title="Figure: School-Level Test Performance by Grade and Test Year") +
-  scale_color_manual(name="Subject",
-                      values=c(ELA="red", Math="darkblue")) 
-
-test_hist
-```
-
-
-
-```{r gradegrp, echo=FALSE, fig.height=3, message=FALSE, warning=FALSE}
+```{r gradegrp, echo=FALSE, fig.height=2.6, message=FALSE, warning=FALSE}
 grp_score_hist <- full_data %>% ggplot() +
   geom_freqpoly(aes(x=percent_level_3_4_e, color="ELA"),
                 bins= 10, 
@@ -146,16 +112,16 @@ grp_score_hist <- full_data %>% ggplot() +
   labs(x="% of Students at Level 3 or 4",
        y="Schools",
        color="Test",
-       title="Figure: School-Level Test Performance by USM Status and Test Year") +
+       title="Figure 2: School-Level Test Performance by USM Status and Test Year") +
   scale_color_manual(name="Subject",
                      values=c(ELA="red", Math="darkblue")) 
 
 grp_score_hist
 ```
 
-Quickly looking at the rates of students performing to standard across all schools (Fig.), we see that rates are rather normally distributed, though they tend to skew left. Encouragingly, skewness for both English and math test performance for all grades being studied has been decreasing over time. Slicing the data by year and USM status and adjusting the scales so curves are at similar heights suggests that while test performance has been improving in both groups, the trend may have accelerated slightly among previously non-USM schools after the 2017 policy change. Figures [] and [] reaffirm this trend.
+Quickly looking at the rates of students performing to standard across all schools (Fig. 2), we see that rates are rather normally distributed, though they tend to skew left. Encouragingly, skewness for both English and math test performance for all grades being studied has been decreasing over time. Slicing the data by year and USM status and adjusting the scales so curves are at similar heights suggests that while test performance has been improving in both groups, the trend may have accelerated slightly among previously non-USM schools after the 2017 policy change. Figures 3 and 4 reaffirm this trend.
 
-```{r trends, echo=FALSE, fig.height=2.5}
+```{r trends, echo=FALSE, fig.height=2.25}
 score_trends_e <- full_data %>% 
   filter(!is.na(percent_level_3_4_e)) %>% 
   group_by(year, grp) %>% 
@@ -166,7 +132,7 @@ score_trends_e <- full_data %>%
   geom_line(size=1) +
   labs(x="Year",
        y="Median % Level 3 or 4",
-       title="Fig. ELA Test Performance") +
+       title="Fig. 3: ELA Performance") +
   theme(legend.position = "none") +
   scale_y_continuous(limits=c(20, 53))
 
@@ -179,7 +145,7 @@ score_trends_m <- full_data %>%
   geom_line(size=1) +
   labs(x="Year",
        y="Median % Level 3 or 4",
-       title="Fig. Math Test Performance") +
+       title="Fig. 4: Math Performance") +
   scale_y_continuous(limits=c(20, 53))
 
 ggarrange(score_trends_e, score_trends_m, nrow=1,  ncol=2)
@@ -197,11 +163,9 @@ ggarrange(score_trends_e, score_trends_m, nrow=1,  ncol=2)
 
 The implementation of universal free meals in elementary schools lends itself to difference-in-differences, or diff-in-diff, study design. With diff-in-diff, a population being studied is divided into a treatment group that received an intervention and a control group that did not, and each observation is noted as being taken either before interventions were staged or after. Here, schools that had USM prior to the 2017-18 school year form the control group, since for them, nothing really changed with the introduction of universal free meals; schools that only had universal free lunch with UFM's implementation form the treatment group.The start of the school year in September 2017 divides test score data into pre- and post-UFM periods. As previously mentioned, standardized tests are administered at the end of the school year, so 2018 score data would be the first for which we would expect to see effects attributable to UFM.
 
-As with any statistical method, certain assumptions must be met to ensure robust results. For diff-in-diff, we assume that outcomes in both groups were similarly trending before the intervention, i.e., the proportion of students testing to standard was improving (or worsening) at the same rate for both groups before the 2017-18 school year. Non-parallel trends can indicate there are other unaccounted for factors driving outcomes. As shown above, performance trends are roughly parallel, although less so from 2015 to 2016. To better meet the parallel trends assumption, only scores from 2016 through 2019 were used, giving us two years each of pre- and post-UFM data.
+As with any statistical method, certain assumptions must be met to ensure robust results. For diff-in-diff, we assume that outcomes in both groups were similarly trending before the intervention, i.e., the proportion of students testing to standard was improving (or worsening) at the same rate for both groups before the 2017-18 school year. Non-parallel trends can indicate there are other unaccounted for factors driving outcomes. As shown above, performance trends are roughly parallel, although less so from 2015 to 2016. To better meet the parallel trends assumption, only scores from 2016 through 2019 were used, giving us two years each of pre- and post-UFM data. We also assume that the composition of groups does not dramatically change over time. Except for the economic disadvantage indicators discussed above, enrollment numbers and demographic composition in New York City public schools has largely held steady, as have profiles for USM versus non-USM schools from the 2015-16 through 2018-19 school year.
 
-We also assume that the composition of groups does not dramatically change over time. Except for the economic disadvantage indicators discussed above, enrollment numbers and demographic composition in New York City public schools has largely held steady. Demographic breakdowns for USM versus non-USM schools also remained fairly steady from the 2015-16 through 2018-19 school year.
-
-We constructed several linear regression models to investigate the effect of UFM on standardized test performance, defined as the percentage of test-takers in a school who scored a 3 or above. The first and simplest models only considered whether the school already had universal free lunch prior to full UFM (`usm_group`) and whether the test scores came from the pre- or post-UFM period (`post_ufm`). The interaction term (`post_ufm:usm_group`) captures the combined effects of both factors, i.e. the effect of the UFM rollout.  These model specifications are shown below with variable names edited for readability.
+We constructed several linear regression models to investigate the effect of UFM on standardized test performance, defined as the percentage of test-takers in a school who scored a 3 or 4. The simplest ones only considered whether the school already had universal free lunch prior to full UFM and whether the test scores came from the pre- or post-UFM period. The interaction term (`post_ufm:usm_group`) captures the combined effects of both factors, i.e. the effect of the UFM rollout.  These model specifications are shown below with variable names edited for readability.
 
 ```{r basemod, message=FALSE, warning=FALSE, eval=FALSE}
 base_ela_model <- lm(ela_percent_level_3_4 ~ post_ufm + usm_group + post_ufm:usm_group, 
@@ -212,7 +176,7 @@ base_math_model <- lm(math_percent_level_3_4 ~ post_ufm + usm_group + post_ufm:u
 ```
 
 
-On their own, pre-2017 USM participation status and pre-/post-UFM implementation constitute poor models, explaining less than one percent of the variation in how much of a school's population meet grade-level English and math standards, as shown by the low R2 values in Table 2 below. While the time period and group membership were both significant to student performance rates at the 99% confidence level, the interaction effect was not at all statistically significant. Non-normally distributed residuals in these models indicate there are unaccounted for factors systemically affecting performance.
+On their own, pre-2017 USM participation status and pre-/post-UFM implementation constitute poor models. They predict that, all other things being held equal, the percentage of students in a given school and grade testing at level 3 or above should be about 7.5 percentage points higher in the post-UFM period, i.e. after September 2017. Being in the treatment group, i.e. in a pre-2017 non-USM school, is also linked to boosts in the proportion of students meeting grade  standards. Interestingly, the interaction effect is negative, deflating but far from negating the boost of being a school that only received free meals in 2017. However, it should be noted that these models explain less than one percent of the variation in how much of a school's population meet grade-level English and math standards, as shown by the low R2 values in Table 2 below. While the time period and group membership were both significant to student performance rates at the 99% confidence level, the interaction effect was not at all statistically significant. Non-normally distributed residuals in these models indicate there are unaccounted for factors systemically affecting performance.
 
 ```{r, echo=FALSE}
 huxreg("Base ELA model"=ela2, 
@@ -228,7 +192,7 @@ huxreg("Base ELA model"=ela2,
 
 ```
 
-Models controlling for school-wide economic need indices and student poverty rates were also constructed, though these have issues due to changes in calculation methodology. Finally, one-year lag variables were introduced: ultimately, the single strongest predictor of what percentage of students will perform well on standardized tets was the percentage of students who did well in the previous year.
+Models controlling for school-wide economic need indices and student poverty rates were also constructed. Finally, one-year lag variables were introduced: ultimately, the single strongest predictor of what percentage of students will perform well on standardized tets was the percentage of students who did well in the previous year.
 
 ```{r eval=FALSE, include=FALSE}
 huxreg("% Poverty Model"=ela_pov2, 
@@ -248,7 +212,25 @@ huxreg("% Poverty Model"=ela_pov2,
   set_caption("Comparison of ELA Models")
 ```
 
-Strikingly, the effect of UFM as indicated by the interaction term was only statistically significant when poverty rates were controlled for; then it was significant at the 0.01% level. While this smacks of p-hacking, the models are just as good as the other ones constructed, as indicated by measures like R2, AIC (where lower values are better), multicollinearity checks, and the normal distribution of residuals.
+```{r modspec, eval=FALSE}
+ela_lag_pov <- lm(percent_level_3_4_ela ~ 
+                     post_ufm + usm_group +
+                     post_ufm:usm_group +
+                     percent_poverty + 
+                     lag_percent_level_3_4_ela,
+                   data=data_subset)
+
+math_lag_pov <- lm(percent_level_3_4_math ~
+                      post_ufm + usm_group +
+                      post_ufm:usm_group +
+                      percent_poverty + 
+                      lag_percent_level_3_4_math,
+                    data=data_subset)
+```
+
+
+Strikingly, the effect of UFM as indicated by the interaction term was only statistically significant when poverty rates were controlled for; then it was significant at the 0.01% level. While this smacks of p-hacking, the models perform just as well as others constructed, as indicated by measures like R2, AIC (where lower values are better), multicollinearity checks, and the normal distribution of residuals. Above are the specifications for two of the best-performing models, with coefficients and quality indicators in Table 3 below.
+
 
 ```{r, echo=FALSE}
 huxreg("ELA: % Poverty with Lag"=lag_ela_pov2,
@@ -260,12 +242,16 @@ huxreg("ELA: % Poverty with Lag"=lag_ela_pov2,
                "% Poverty"="percent_poverty",
                "Lagged ELA Performance"="prev_e",
                "Lagged Math Performance"="prev_m"),
-       statistics = c("Adj. R2"="adj.r.squared"),
+       statistics = c("N"="nobs",
+                      "Adj. R2"="adj.r.squared",
+                      "Log Likelihood"="logLik",
+                      "AIC"="AIC"),
        error_format="",
        error_pos="same") %>% 
   set_caption("Summary of Preferred Models")
 ```
 
+All other things being held equal here, these models predict a boost of about 3.2 and 5 percentage points in the proportion of students meeting grade standards on their ELA and math exams, respectively, post-UFM implementation. Non-USM schools are estimated to have higher proportions of students meeting grade standards in both English (4 points higher) and math (2.7 points higher). This makes sense, given that USM schools tend to have more English language learners and tend to have high economic need indices. While non-USM schools often do report higher poverty rates, schools where the majority of students are [relatively] economically advantaged tended to be non-USM as well. Intuitively, poverty rates are negatively associated with the rate of students testing at level 3 or 4. The previous year's performance rates are also statistically significant indicators of the current year's outcomes. Again, this makes sense: even though individual students change, schools tend to draw classes with fairly similar profiles from one year to the next; staffing and procedures may not change all that quickly. Last but not least is the interaction term, indicating the effect of UFM rollout. Again, puzzlingly, it is negative. Though it does not negate the boosts from being a non-USM school post-UFM rollout, it dampens them by 2.5 points for English and 1.8 points for math performance, suggesting that UFM did not help non-USM schools as much as it did schools that had free lunch all along. Again, this is a viable explanation: hungry students benefit more from free meals than ones with adequate access to food, but that's why their schools had universal free meals first.
 
 
 ## Discussion
@@ -274,13 +260,11 @@ Data and methodological issues affected results and present opportunities for fu
 
 Finer-grained grade-level breakdowns would also produce more robust results. The DOE demographic snapshots provide figures for entire schools, but economic need indices, percentages of English Language Learners, and other factors differ between grades as well. Similarly, the DOE publishes more granular school/grade/year test score data broken out by traits like economic status. Using this data could help tease out the impacts of UFM on different groups of students, though with a smaller sample size -- to comply with FERPA regulations and protect students' privacy, the group size threshold for breakout data is even higher than the six-student minimum for full-school data.
 
-Charter schools present a particular challenge. The hundred charter schools in the data were retained for this study because they disproportionately serve economically disadvantaged students of color, but their data is less reliable. A quarter of them do not use the Department of Education's School Food services, which means they lack data on free or reduced-price lunch eligibility. The specific schools are not publicly identified, but economic disadvantage indicators are understated for them (and the non-USM group in general, as only one charter was a USM elementart school pre-2017) as result.
+Charter schools present a particular challenge. The hundred charter schools in the data were retained for this study because they disproportionately serve economically disadvantaged students of color, but their data is less reliable. A quarter of them do not use the Department of Education's School Food services, which means they lack data on free or reduced-price lunch eligibility. The specific schools are not publicly identified, but economic disadvantage indicators are understated for them (and the non-USM group in general, as only one charter was a USM elementary school pre-2017) as result.
 
 Methodologically, the experimental design in this analysis is somewhat backwards. In a typical diff-in-diff analysis, neither the control nor the treatment group participates in a program at the outset. Here, the control group consists of schools who were already being treated, while the treatment group receives the same treatment later. In addition, treatment was already in effect for all public middle schools. This may have inadvertently led to spillover and muddled effects. It is common for families to have children in both elementary and middle school, for example; a program that helps one child can free up resources or reduce caregiver stress in a way that benefits the other children.
 
-The parallel trends assumption could be more convincingly argued. "Median % of Students Testing at Level 3 or 4" is an awkward summary statistic of performance; while it helps capture trends at a glance, other summary statistics would supplement the picture. The lines in the above charts are imperfectly parallel, especially for math scores.
-
-Another assumption is that no other changes occurred during the 2017-18 school year that may have affected these results. This assumption is immediately violated by the non-retroactive 2017 change in student poverty calculations, which affects most models here. Another violation of the assumption is a change in both ELA and math test administration in 2018. The exams went from being three-day to two-day events, and the tests were rescaled, so mean scaled scores cannot be used to evaluate student outcomes. Neither the NYC DOE data documentation nor the New York State DOE's Information and Reporting Services site indicate that levels are incomparable between time periods, which is why the percentage of students testing at level 3 or 4 was used instead. While this addresses the problem of comparability, it means that smaller improvements in test results went unnoticed. Finally, a computer-based test delivery option was also introduced in the 2017-18 school year, though the extent to which New York City public schools adopted computer-based testing is unclear.
+A major assumption is that no other changes occurred during the 2017-18 school year that may have affected these results. This assumption is immediately violated by the non-retroactive 2017 change in student poverty calculations, which affects most models here. Another violation of the assumption is a change in both ELA and math test administration in 2018. The exams went from being three-day to two-day events, and the tests were rescaled, so mean scaled scores cannot be used to evaluate student outcomes. Neither the NYC DOE data documentation nor the New York State DOE's Information and Reporting Services site indicate that levels are incomparable between time periods, which is why the percentage of students testing at level 3 or 4 was used instead. While this addresses the problem of comparability, it means that smaller improvements in test results went unnoticed. Finally, a computer-based test delivery option was also introduced in the 2017-18 school year, though the extent to which New York City public schools adopted computer-based testing is unclear.
 
 Differences between treatment and control groups also affected the strength of the results. The treatment group was about three times larger than the control group; the discrepancy in group sizes means that we have to find larger differences in outcomes in order to say UFM has had a significant effect. Because USM participation was school-driven until 2017, there may be self-selection factors or other unobserved explanatory variables in play.
 
@@ -288,80 +272,81 @@ Differences between treatment and control groups also affected the strength of t
 ### Ethical Concerns
 All of the datasets used are publicly available, either through the City of New York's open data portal or via the Department of Education's website. The data's use here falls within guidelines given by the DOE, as research was not conducted within schools, no human subjects were directly involved, and no individual-level data was sought or used. No personally identifiable information was incorporated in the analysis, and schools with small numbers of test-takers, where students could most easily be de-anonymized, were not included. Arguably, there is not much difference between a case where six students took a test (and the record was included) and one where only five did (and the record was excluded to comply with FERPA regulations), but here we deferred to the DOE's judgement on what data to make public.
 
-That said, all research on children is research on people who cannot themselves consent to participation and who have no means to protest. At the elementary school level, it is safe to assume students do not know what data is being gathered about them and for what purposes it is used. In a school system where 1 in 10 students are homeless, 7 in 10 face economic hardship, and 1 in 8 are English Language Learners, it is not reasonable to expect their families to have the time or means to monitor data collection on their children, either.
+That said, all research on children is research on people who cannot themselves consent to participation and who have no means to protest. At the elementary school level, it is safe to assume students do not know what data is being gathered about them and for what purposes it is used. In a school system where 1 in 10 students are homeless, 7 in 10 face economic hardship, and 1 in 8 are English Language Learners, it is not reasonable to expect their families to have the time or means to monitor data collection on their children, either. In some ways the collection and use of this data speak to the ways that privacy is a luxury. Those who must avail themselves of government services must provide data; the greater the need, the more information must be provided, in the form of public assistance applications, reduced-price school lunch forms, or even round after round of standardized testing, from which many of the city's most expensive private schools and more privileged public school families have opted out.
 
 Standardized testing and common core standards are taken for granted here as accurate representations of educational attainment and academic achievement. These assumptions are worth questioning, though larger debates about labor and teacher autonomy, curriculum priorities, test-driven instruction, a stratified education system and the purpose of school are well beyond the scope of this paper. It is risky to reduce student performance to scores on a single, high-stakes two-to-three-day test. Using the latter as the sole proxy for the former should not be taken as an endorsement.
 
-Finally, it should be reiterated that feeding kids is a worthy project regardless of measured educational outcomes. This paper tried to identify effects of universal free meals on one aspect of students' education. Limitations in the data, the method, and the researcher yielded either no statistically significant effects or suspiciously statistically significant effects.
+Finally, it should be reiterated that feeding kids is a worthy project regardless of measured educational outcomes. This paper tried to identify effects of universal free meals on one aspect of students' education. Limitations in the data, the method, and the researcher yielded either no statistically significant effects or suspiciously statistically significant effects. It is highly unlikely that feeding students makes them worse at school; even if it did, that's no reason to discontinue the program.
 
 
 ## Appendix A: Code
-Code and data used in this paper can be accessed at 
-
+Code and data used in this paper can be accessed at https://github.com/amfzed/inf2178-pset4.
 
 ## Appendix B: Model Quality Indicators for Preferred Models
 ### ELA Model: % Poverty with Lag
-```{r check_perf_e, echo=FALSE}
+```{r check_perf_e, echo=FALSE, message=FALSE, warning=FALSE}
 check_model(lag_ela_pov2)
 glance(lag_ela_pov2) %>% knitr::kable(caption="Indicators of Model Quality, Preferred ELA Model")
 ```
 
 ### Math Model: % Poverty with Lag
-```{r check_perf_m, echo=FALSE}
+```{r check_perf_m, echo=FALSE, message=FALSE, warning=FALSE}
 check_model(lag_math_pov2)
 glance(lag_math_pov2) %>% knitr::kable(caption="Indicators of Model Quality, Preferred Math Model")
 ```
 
-## Appendix C: Comparison of Selected Models
-### ELA Models
-```{r, echo=FALSE}
-huxreg(lag_ela_eni2, lag_ela_pov2, lag_ela_eni_ell, lag_ela_pov_ell, lag_ela_ell, lag_ela2)
-compare_performance(lag_ela_eni2, lag_ela_pov2, lag_ela_eni_ell, lag_ela_pov_ell, lag_ela2)
-```
-
-### Math Models
-```{r, echo=FALSE}
-huxreg(lag_math_eni2, lag_math_pov2, lag_m_eni_ell, lag_m_pov_ell, lag_m_ell, lag_math2)
-compare_performance(lag_math_eni2, lag_math_pov2, lag_m_eni_ell, lag_m_pov_ell, lag_math2)
-```
-
-
 
 ## References
-### Datasets
-New York City Department of Education. (2018). _2011-2016 Demographic Snapshot_ [data set]. https://data.cityofnewyork.us/Education/2011-2016-Demographic-Snapshot/8mzw-jfss. 
 
-Neew York City Department of Education. (2019). _2014-2019 Demographic Snapshot_ [data set]. Retrieved from https://infohub.nyced.org/reports/school-quality/information-and-data-overview.
+Auguie, B. (2019). egg: Extensions for 'ggplot2': Custom Geom, Custom Themes, Plot Alignment, Labelled Panels,
+  Symmetric Scales, and Fixed Panel Size. R package version 0.4.5. https://CRAN.R-project.org/package=egg..
 
-New York City Department of Education (2019). _School ELA Test Results 2013-2019_ [data set]. https://infohub.nyced.org/reports/academics/test-results.
+Devlin, H., et al. (2019). RSocrata: Download or Upload 'Socrata' Data Sets. R package version 1.7.10-6. https://CRAN.R-project.org/package=RSocrata.
 
-New York City Department of Education (2019). _School Math Test Results 2013-2019_ [data set]. https://infohub.nyced.org/reports/academics/test-results.
-
-
-### Code Libraries
 Firke, S. (2019). janitor: Simple Tools for Examining and Cleaning Dirty Data. R package version 1.2.0.
   https://CRAN.R-project.org/package=janitor.
   
+Hugh-Jones, D. (2020). huxtable: Easily Create and Style Tables for LaTeX, HTML and Other Formats. R package version
+  4.7.1. https://CRAN.R-project.org/package=huxtable.
+  
+Lüdecke, D. Makowski, D., & Waggoner, P. (2020). performance: Assessment of Regression Models Performance. R
+  package version 0.4.4. https://CRAN.R-project.org/package=performance.
+  
+New York City Department of Education. (2018). _2011-2016 Demographic Snapshot_ [data set]. https://data.cityofnewyork.us/Education/2011-2016-Demographic-Snapshot/8mzw-jfss. 
+
+New York City Department of Education. (2019). _2014-2019 Demographic Snapshot_ [data set]. Retrieved from https://infohub.nyced.org/reports/school-quality/information-and-data-overview.
+
+New York City Department of Education (2019). _Charter School ELA and Math Test Results 2013-2019_ [data set]. Retrieved from https://infohub.nyced.org/reports/academics/test-results.
+
+New York City Department of Education (2019). _School ELA Test Results 2013-2019_ [data set]. Retrieved from https://infohub.nyced.org/reports/academics/test-results.
+
+New York City Department of Education (2019). _School Math Test Results 2013-2019_ [data set]. Retrieved from https://infohub.nyced.org/reports/academics/test-results.
+
+New York City Department of Education. (n.d.). Doing Research in or about New York City Public Schools. https://infohub.nyced.org/working-with-the-doe/research-irb/doing-research-in-new-york-city-public-schools.
+
+New York State Education Department. (2019). English Language Arts (ELA) and Mathematic Assessment Results. http://www.p12.nysed.gov/irs/ela-math/.
+
 R Core Team (2019). R: A language and environment for statistical computing. R Foundation for Statistical
   Computing, Vienna, Austria. URL https://www.R-project.org/.
   
 Robinson, D. & Hayes, A. (2019). broom: Convert Statistical Analysis Objects into Tidy Tibbles. R package version 0.5.3.
   https://CRAN.R-project.org/package=broom.
   
+Schwartz, A. E. & Rothbart, M. W. (July 2019). _Let Them Eat Lunch: The Impact of Universal Free Meals on Student Performance_. https://www.maxwell.syr.edu/uploadedFiles/cpr/publications/working_papers2/wp203.pdf.
+
 Waring, E. et al. (2019). skimr: Compact and
-  Flexible Summaries of Data. R package version 2.0.2. https://CRAN.R-project.org/package=skimr
+  Flexible Summaries of Data. R package version 2.0.2. https://CRAN.R-project.org/package=skimr.
+  
+Wickham, H. (2019). httr: Tools for Working with URLs and HTTP. R package version 1.4.1.
+  https://CRAN.R-project.org/package=httr.
+
+Wickham, H. & Jennifer Bryan, J. (2019). readxl: Read Excel Files. R package version 1.3.1.
+  https://CRAN.R-project.org/package=readxl.
 
 Wickham, H. et al., (2019). Welcome to the tidyverse. _Journal of Open Source Software, 4(43), 1686_.
   https://doi.org/10.21105/joss.01686.
-
-### Other
-New York City Department of Education. (n.d.). Doing Research in or about New York City Public Schools. https://infohub.nyced.org/working-with-the-doe/research-irb/doing-research-in-new-york-city-public-schools.
-
-Schwartz, A. E. & Rothbart, M. W. (July 2019). _Let Them Eat Lunch: The Impact of Universal Free Meals on Student Performance_. https://www.maxwell.syr.edu/uploadedFiles/cpr/publications/working_papers2/wp203.pdf.
-
+  
 Zimmerman, A. (6 September, 2017). New York City unveils universal free lunch in time for the first day of school. _Chalkbeat_.  https://chalkbeat.org/posts/ny/2017/09/06/new-york-city-unveils-universal-free-lunch-in-time-for-the-first-day-of-school/.
 
-
-http://www.p12.nysed.gov/irs/ela-math/
 
 
